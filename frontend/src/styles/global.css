@@ -1,0 +1,55 @@
+/* 知雀ERP 全局样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: #d9d9d9;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #bfbfbf;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ERP单据状态标签颜色 */
+.status-draft { color: #8c8c8c; }
+.status-submitted { color: #1677ff; }
+.status-audited { color: #52c41a; }
+.status-partial { color: #fa8c16; }
+.status-closed { color: #8c8c8c; }
+
+/* 引导教学相关 */
+.react-joyride__tooltip {
+  font-family: inherit !important;
+}
+
+/* 表格行hover */
+.ant-table-tbody > tr:hover > td {
+  background: #f0f7ff !important;
+}
+
+/* 单据表单间距 */
+.bill-form .ant-form-item {
+  margin-bottom: 16px;
+}
+
+/* 明细表格 */
+.detail-table .ant-table-cell {
+  padding: 8px !important;
+}

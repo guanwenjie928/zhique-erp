@@ -217,10 +217,11 @@ export const learningApi = {
   getScenario: (code) => api.get(`/learning/scenarios/${code}`),
   startScenario: (code) => api.post(`/learning/scenarios/${code}/start`),
   finishScenario: (code, data) => api.post(`/learning/scenarios/${code}/finish`, data),
-  getProgress: () => api.get('/learning/progress'),
-  updateProgress: (courseId, data) => api.put(`/learning/progress/${courseId}`, data),
-  getScores: () => api.get('/learning/scores'),
-  logOperation: (data) => api.post('/learning/operations', data),
+  getProgress: () => api.get('/learning/courses'),
+  updateProgress: (courseId, data) => api.put(`/learning/courses/${courseId}/progress`, data),
+  getScores: () => api.get('/learning/operation-scores'),
+  getScoresSummary: () => api.get('/learning/scores/summary'),
+  logOperation: (data) => api.post('/learning/operation-logs', data),
 }
 
 export default api

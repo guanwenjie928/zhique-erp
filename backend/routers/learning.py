@@ -298,6 +298,58 @@ def create_scenario(data: ScenarioCreate, db: Session = Depends(get_db)):
     return scenario
 
 
+@router.post("/scenarios/{scenario_code}/start", response_model=ScenarioResultOut)
+def start_scenario(scenario_code: str, db: Session = Depends(get_db)):
+    """启动场景：创建一条in_progress的结果记录"""
+    scenario = db.query(LearningScenario).filter(
+        LearningScenario.code == scenario_code
+    ).first()
+    if not scenario:
+        raise HTTPException(status_code=404, detail="场景不存在")
+
+    result = ScenarioResult(
+        user_id=1,
+        scenario_code=scenario_code,
+        status="in_progress",
+        started_at=datetime.now(),
+    )
+    db.add(result)
+    db.commit()
+    db.refresh(result)
+    return result
+
+
+@router.post("/scenarios/{scenario_code}/finish", response_model=ScenarioResultOut)
+def finish_scenario(scenario_code: str, data: dict, db: Session = Depends(get_db)):
+    """完成场景：更新结果记录并计算评分"""
+    result = db.query(ScenarioResult).filter(
+        ScenarioResult.user_id == 1,
+        ScenarioResult.scenario_code == scenario_code,
+        ScenarioResult.status == "in_progress",
+    ).order_by(ScenarioResult.id.desc()).first()
+
+    if not result:
+        result = ScenarioResult(
+            user_id=1,
+            scenario_code=scenario_code,
+            started_at=datetime.now(),
+        )
+        db.add(result)
+
+    result.status = "completed"
+    result.completed_at = datetime.now()
+    result.total_score = data.get("total_score")
+    result.accuracy_score = data.get("accuracy_score")
+    result.completeness_score = data.get("completeness_score")
+    result.compliance_score = data.get("compliance_score")
+    result.efficiency_score = data.get("efficiency_score")
+    result.feedback = data.get("feedback")
+
+    db.commit()
+    db.refresh(result)
+    return result
+
+
 # ============================================================
 # Endpoints - Scenario Results
 # ============================================================

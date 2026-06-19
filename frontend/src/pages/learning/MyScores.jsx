@@ -3,7 +3,7 @@ import { Card, Table, Tag, Space, Typography, Statistic, Row, Col, Progress, Emp
 import { TrophyOutlined, ArrowLeftOutlined, RiseOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { learningApi } from '../../api'
-import { formatDate } from '../../components/CrudHelpers'
+import { formatDate, formatDateTime } from '../../components/CrudHelpers'
 
 const { Title, Text } = Typography
 
@@ -47,7 +47,7 @@ export default function MyScores() {
       dataIndex: 'created_at',
       key: 'created_at',
       width: 160,
-      render: (v) => formatDate(v, true),
+      render: (v) => formatDateTime(v),
     },
     {
       title: '模块',

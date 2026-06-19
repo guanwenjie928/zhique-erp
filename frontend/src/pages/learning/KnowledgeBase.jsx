@@ -237,6 +237,7 @@ export default function KnowledgeBase() {
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [activeCategory, setActiveCategory] = useState('全部')
+  const [selectedArticle, setSelectedArticle] = useState(null)
 
   const filteredArticles = useMemo(() => {
     return KNOWLEDGE_ARTICLES.filter(a => {

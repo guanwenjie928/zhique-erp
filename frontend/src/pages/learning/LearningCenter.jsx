@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Col, Row, Progress, Button, Tag, Space, Typography, Empty, Spin, Statistic } from 'antd'
+import { Card, Col, Row, Progress, Button, Tag, Space, Typography, Empty, Spin, Statistic, message } from 'antd'
 import {
   ReadOutlined, RocketOutlined, TrophyOutlined, BookOutlined,
   ArrowRightOutlined, CheckCircleOutlined, PlayCircleOutlined,
@@ -7,6 +7,7 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { learningApi } from '../../api'
 import { useAppStore } from '../../stores/appStore'
+import { TOUR_CONFIGS } from './tourConfigs'
 
 const { Title, Paragraph, Text } = Typography
 
@@ -16,7 +17,7 @@ const { Title, Paragraph, Text } = Typography
  */
 export default function LearningCenter() {
   const navigate = useNavigate()
-  const { currentUser } = useAppStore()
+  const { currentUser, startTour } = useAppStore()
   const [courses, setCourses] = useState([])
   const [scenarios, setScenarios] = useState([])
   const [scores, setScores] = useState([])
@@ -91,7 +92,20 @@ export default function LearningCenter() {
               <Card
                 size="small"
                 hoverable
-                onClick={() => navigate(`/learning/tour/${course.course_id}`)}
+                onClick={() => {
+                  const config = TOUR_CONFIGS[course.course_id]
+                  if (config) {
+                    // 记录开始学习
+                    learningApi.updateProgress(course.course_id, {
+                      status: 'in_progress',
+                      progress: 0,
+                    }).catch(() => {})
+                    // 启动引导
+                    startTour(course.course_id, config.name, config.steps)
+                  } else {
+                    message.info('该课程内容正在编写中，敬请期待！')
+                  }
+                }}
                 className={`tour-card-${course.course_id}`}
                 actions={[
                   course.status === 'completed' ?

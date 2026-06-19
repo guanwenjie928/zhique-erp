@@ -8,6 +8,7 @@ import {
 } from '@ant-design/icons'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAppStore } from '../stores/appStore'
+import TourOverlay from '../components/TourOverlay'
 
 const { Header, Sider, Content } = Layout
 
@@ -217,6 +218,9 @@ export default function MainLayout() {
           <Outlet />
         </Content>
       </Layout>
+
+      {/* 全局引导浮层 */}
+      <TourOverlay />
     </Layout>
   )
 }
